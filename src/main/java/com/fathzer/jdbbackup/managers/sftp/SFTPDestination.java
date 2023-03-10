@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import com.fathzer.jdbbackup.DefaultPathDecoder;
 
-public class SFTPDestination {
+class SFTPDestination {
 	private String user;
 	private String password;
 	private String host;
@@ -16,8 +16,9 @@ public class SFTPDestination {
 
 	/** Constructor.
 	 * @param destination The destination in its string format: <i>user:pwd[@host[:port]][/path]/filename</i>
+	 * @param extensionBuilder An extension builder that will add extension to file name if needed
 	 */
-	public SFTPDestination(String destination, Function<String,CharSequence> extensionBuilder) {
+	SFTPDestination(String destination, Function<String,CharSequence> extensionBuilder) {
 		int index = destination.indexOf(URI_PATH_SEPARATOR);
 		if (index < 0) {
 			badFileName(destination);

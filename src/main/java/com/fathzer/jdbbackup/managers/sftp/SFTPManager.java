@@ -24,16 +24,12 @@ import com.jcraft.jsch.SftpException;
 public class SFTPManager implements DestinationManager<SFTPDestination> {
 	private ProxyHTTP proxy;
 
-	public SFTPManager() {
-		super();
-	}
-
 	@Override
 	public void setProxy(ProxySettings options) {
 		if (options != null) {
 			proxy = new ProxyHTTP(options.getHost(), options.getPort());
 			if (options.getLogin() != null) {
-				proxy.setUserPasswd(options.getLogin().getUserName(), new String(options.getLogin().getPassword()));
+				proxy.setUserPasswd(options.getLogin().getUserName(), String.valueOf(options.getLogin().getPassword()));
 			}
 		} else {
 			proxy = null;
@@ -70,7 +66,7 @@ public class SFTPManager implements DestinationManager<SFTPDestination> {
 		}
 	}
 
-	void send(final Session session, SFTPDestination dest, InputStream in) throws JSchException, IOException {
+	private static void send(final Session session, SFTPDestination dest, InputStream in) throws JSchException, IOException {
 		ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
 		channel.connect();
 		try {
@@ -87,7 +83,7 @@ public class SFTPManager implements DestinationManager<SFTPDestination> {
 		}
 	}
 
-	public static void mkdirs(ChannelSftp ch, String path) throws SftpException {
+	private static void mkdirs(ChannelSftp ch, String path) throws SftpException {
 		final List<String> folders = new ArrayList<>(Arrays.asList(path.split("/")));
 		StringBuilder fullPath;
 		if (folders.get(0).isEmpty()) {
