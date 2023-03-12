@@ -9,8 +9,8 @@
 	<version>1.0.0</version>
 	<description>A simple java library to perform db backup stored in dropbox, sftp or local file</description>
 	<scm>
-		<url>https://github.com/fathzer/jdbbackup.git</url>
-		<connection>https://github.com/fathzer/jdbbackup.git</connection>
+		<url>https://github.com/jdbbackup/jdbbackup-sftp.git</url>
+		<connection>https://github.com/jdbbackup/jdbbackup-sftp.git</connection>
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

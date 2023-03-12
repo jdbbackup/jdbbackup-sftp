@@ -118,7 +118,7 @@ public class SFTPManager implements DestinationManager<SFTPDestination> {
 	}
 
 	@Override
-	public String getProtocol() {
+	public String getScheme() {
 		return "sftp";
 	}
 }
