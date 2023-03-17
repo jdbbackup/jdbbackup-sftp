@@ -42,7 +42,7 @@ public class SFTPManager implements DestinationManager<SFTPDestination> {
 	}
 
 	@Override
-	public String send(InputStream in, long size, SFTPDestination dest) throws IOException {
+	public void send(InputStream in, long size, SFTPDestination dest) throws IOException {
 		try {
 			final JSch jsch = new JSch();
 			final Session session = jsch.getSession(dest.getUser(), dest.getHost(), dest.getPort());
@@ -56,8 +56,6 @@ public class SFTPManager implements DestinationManager<SFTPDestination> {
 			session.connect();
 			try {
 				send(session, dest, in);
-				final String fullPath = dest.getPath() == null ? dest.getFilename() : dest.getPath() + URI_PATH_SEPARATOR + dest.getFilename();
-				return "Sent to " + dest.getUser() + "@" + dest.getHost() + ": " + fullPath;
 			} finally {
 				session.disconnect();
 			}
