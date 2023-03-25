@@ -20,6 +20,7 @@ import com.jcraft.jsch.SftpException;
 
 /**
  * A destination manager that saves the backups to a sftp server.
+ * <br>The address format is: sftp://user:pwd[@host[:port]][/path]/filename.
  */
 public class SFTPManager implements DestinationManager<SFTPDestination> {
 	private ProxyHTTP proxy;

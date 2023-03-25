@@ -1,8 +1,8 @@
 # jdbbackup-sftp
-A JDBBackup destination manager that saves backups to a sftp server.
+A [JDBBackup](https://github.com/jdbbackup/jdbbackup-core) destination manager that saves backups to a sftp server.
 
 ## Destination format
-sftp://user:pwd\[@host\[:port\]\]\[/path\]/filename
+sftp://*user*:*pwd*\[@*host*\[:*port*\]\]\[/*path*\]/*filename*
 
 Default values of optional parts:
 - *host*: 127.0.0.1.  
