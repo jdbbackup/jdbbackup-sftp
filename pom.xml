@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>jdbbackup-sftp</artifactId>
 	<version>1.0.0</version>
-	<description>A simple java library to perform db backup stored in dropbox, sftp or local file</description>
+	<description>A JDBBackup destination manager to store backups through sftp</description>
 	<scm>
 		<url>https://github.com/jdbbackup/jdbbackup-sftp.git</url>
 		<connection>https://github.com/jdbbackup/jdbbackup-sftp.git</connection>
