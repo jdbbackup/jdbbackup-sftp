@@ -1,4 +1,4 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import static com.fathzer.jdbbackup.DestinationManager.URI_PATH_SEPARATOR;
 

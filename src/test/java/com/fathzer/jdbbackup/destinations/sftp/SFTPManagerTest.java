@@ -1,16 +1,17 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Vector;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 
-import com.fathzer.jdbbackup.utils.ProxySettings;
+import com.fathzer.plugin.loader.utils.ProxySettings;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.JSch;
@@ -58,7 +59,7 @@ class SFTPManagerTest {
 		SFTPManager manager = new SFTPManager();
 		
 		try (MockedConstruction<ProxyHTTP> mock = mockConstruction(ProxyHTTP.class)) {
-			manager.setProxy(settings);
+			manager.setProxy(settings.toProxy(), settings.getLogin());
 			final ProxyHTTP proxy = mock.constructed().get(0);
 			verify(proxy).setUserPasswd("a", "b");
 
@@ -88,7 +89,7 @@ class SFTPManagerTest {
 		
 		// Test setProxy accept null with no exception and clears the proxy
 		try (MockedConstruction<ProxyHTTP> mock = mockConstruction(ProxyHTTP.class)) {
-			manager.setProxy(null);
+			manager.setProxy(Proxy.NO_PROXY, null);
 			assert(mock.constructed().isEmpty());
 
 			SFTPDestination dest = manager.validate("user:pwd//filename",x->x);

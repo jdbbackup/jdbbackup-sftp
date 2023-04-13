@@ -1,4 +1,4 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

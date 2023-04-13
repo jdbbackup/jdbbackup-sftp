@@ -1,7 +1,10 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,7 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.fathzer.jdbbackup.DestinationManager;
-import com.fathzer.jdbbackup.utils.ProxySettings;
+import com.fathzer.jdbbackup.ProxyCompliant;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.JSch;
@@ -22,15 +25,17 @@ import com.jcraft.jsch.SftpException;
  * A destination manager that saves the backups to a sftp server.
  * <br>The address format is: sftp://user:pwd[@host[:port]][/path]/filename.
  */
-public class SFTPManager implements DestinationManager<SFTPDestination> {
+public class SFTPManager implements DestinationManager<SFTPDestination>, ProxyCompliant {
 	private ProxyHTTP proxy;
 
 	@Override
-	public void setProxy(ProxySettings options) {
-		if (options != null) {
-			proxy = new ProxyHTTP(options.getHost(), options.getPort());
-			if (options.getLogin() != null) {
-				proxy.setUserPasswd(options.getLogin().getUserName(), String.valueOf(options.getLogin().getPassword()));
+	public void setProxy(Proxy p, PasswordAuthentication auth) {
+		ProxyCompliant.super.setProxy(p, auth);
+		if (!Proxy.NO_PROXY.equals(p)) {
+			final InetSocketAddress addr = (InetSocketAddress) p.address();
+			proxy = new ProxyHTTP(addr.getHostString(), addr.getPort());
+			if (auth != null) {
+				proxy.setUserPasswd(auth.getUserName(), String.valueOf(auth.getPassword()));
 			}
 		} else {
 			proxy = null;

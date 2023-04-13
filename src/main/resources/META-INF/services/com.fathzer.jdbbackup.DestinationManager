@@ -1,1 +1,1 @@
-com.fathzer.jdbbackup.managers.sftp.SFTPManager
+com.fathzer.jdbbackup.destinations.sftp.SFTPManager
