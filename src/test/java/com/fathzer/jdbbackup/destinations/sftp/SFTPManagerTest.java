@@ -1,5 +1,6 @@
 package com.fathzer.jdbbackup.destinations.sftp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ class SFTPManagerTest {
 	@Test
 	void basicTest() throws JSchException, IOException, SftpException {
 		SFTPManager manager = new SFTPManager();
+		assertEquals("sftp", manager.getScheme());
 		SFTPDestination dest = manager.validate("user:pwd/path/nonexisting/filename",x->x);
 		
 		final Session session = mock(Session.class);
@@ -103,6 +105,13 @@ class SFTPManagerTest {
 				manager.send(null, 0, dest);
 				verify(session, never()).setProxy(any(ProxyHTTP.class));
 			}
+		}
+
+		// Test setProxy with no login
+		try (MockedConstruction<ProxyHTTP> mock = mockConstruction(ProxyHTTP.class)) {
+			manager.setProxy(settings.toProxy(), null);
+			final ProxyHTTP proxy = mock.constructed().get(0);
+			verify(proxy, never()).setUserPasswd(any(), any());
 		}
 	}
 
