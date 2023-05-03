@@ -1,12 +1,14 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import static com.fathzer.jdbbackup.DestinationManager.URI_PATH_SEPARATOR;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 import com.fathzer.jdbbackup.DefaultPathDecoder;
 
-public class SFTPDestination {
+class SFTPDestination {
 	private String user;
 	private String password;
 	private String host;
@@ -16,8 +18,10 @@ public class SFTPDestination {
 
 	/** Constructor.
 	 * @param destination The destination in its string format: <i>user:pwd[@host[:port]][/path]/filename</i>
+	 * @param extensionBuilder An extension builder that will add extension to file name if needed
 	 */
-	public SFTPDestination(String destination, Function<String,CharSequence> extensionBuilder) {
+	SFTPDestination(String destination, Function<String,CharSequence> extensionBuilder) {
+		destination = DefaultPathDecoder.INSTANCE.decodePath(destination);
 		int index = destination.indexOf(URI_PATH_SEPARATOR);
 		if (index < 0) {
 			badFileName(destination);
@@ -45,8 +49,8 @@ public class SFTPDestination {
 		if (index < 0) {
 			badFileName(fileName);
 		}
-		this.user = userData.substring(0, index);
-		this.password = userData.substring(index + 1);
+		this.user = URLDecoder.decode(userData.substring(0, index), StandardCharsets.UTF_8);
+		this.password = URLDecoder.decode(userData.substring(index + 1), StandardCharsets.UTF_8);
 	}
 
 	private void parseHostData(String fileName, String hostData) {
@@ -75,7 +79,7 @@ public class SFTPDestination {
 		if (filename.isEmpty()) {
 			badFileName(fileName);
 		}
-		this.filename = DefaultPathDecoder.INSTANCE.decodePath(this.filename, extensionBuilder);
+		this.filename = extensionBuilder.apply(this.filename).toString();
 	}
 
 	private void badFileName(String fileName) {

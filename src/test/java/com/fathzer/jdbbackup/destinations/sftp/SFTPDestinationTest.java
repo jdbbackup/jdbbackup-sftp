@@ -1,4 +1,4 @@
-package com.fathzer.jdbbackup.managers.sftp;
+package com.fathzer.jdbbackup.destinations.sftp;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -21,6 +21,13 @@ class SFTPDestinationTest {
 		assertEquals(2222, m.getPort());
 		assertEquals("path1/path2", m.getPath());
 		assertEquals("filename.sql.gz", m.getFilename());
+	}
+	
+	@Test
+	void testDelimitersInUsePassword() {
+		SFTPDestination m = new SFTPDestination("root%40test%3Ax:zstackqwe%3A%21%40%23@172.16.36.184/path", s->s);
+		assertEquals("root@test:x",m.getUser());
+		assertEquals("zstackqwe:!@#",m.getPassword());
 	}
 
 	@Test
